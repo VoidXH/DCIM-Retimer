@@ -2,9 +2,10 @@
 
 static void Process(string file) {
     string fileName = Path.GetFileNameWithoutExtension(file);
-    if (fileName.Length >= 19) { // At least IMG_YYYYMMDD_HHMMSS long
+    int from = fileName.IndexOf('_');
+    if (from != -1 && fileName.Length >= from + 16) { // At least have _YYYYMMDD_HHMMSS
         try {
-            string source = fileName.Substring(4, 15);
+            string source = fileName.Substring(from + 1, 15);
             DateTime parsed = DateTime.ParseExact(source, "yyyyMMdd_HHmmss", CultureInfo.InvariantCulture);
             File.SetCreationTime(file, parsed);
             File.SetLastWriteTime(file, parsed);
